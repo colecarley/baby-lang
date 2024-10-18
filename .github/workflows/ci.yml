@@ -15,7 +15,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         context: ./.devcontainer
-        file: Dockerfile
+        file: ./.devcontainer/Dockerfile
         platforms: linux/amd64
         push: true
         tags: "compiler-image:latest"
