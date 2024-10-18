@@ -14,9 +14,12 @@ jobs:
     - name: Build docker image 
       uses: docker/build-push-action@v6
       with:
+        tages: baby
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         platforms: linux/amd64
         cache-from: type=local,src=/tmp/.devcontainer-cache
         cache-to: type=local,dest=/tmp/.devcontainer-cache
 
+    - name: Test docker image
+      run: docker run baby echo "Hello, World!"
