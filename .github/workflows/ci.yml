@@ -17,8 +17,6 @@ jobs:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         platforms: linux/amd64
-        push: true
-        tags: "compiler-image:latest"
         # cache-from: type=local,src=/tmp/.devcontainer-cache
         # cache-to: type=local,dest=/tmp/.devcontainer-cache
 
