@@ -18,6 +18,7 @@ jobs:
         context: ./.devcontainer
         file: ./.devcontainer/Dockerfile
         platforms: linux/amd64
+        push: true
         cache-from: type=local,src=/tmp/.devcontainer-cache
         cache-to: type=local,dest=/tmp/.devcontainer-cache
 
