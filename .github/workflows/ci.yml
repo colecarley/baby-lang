@@ -12,7 +12,16 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Build docker image 
-      run: docker buildx build --push --platform linux/amd64 -t compiler-image -f ./.devcontainer/Dockerfile ./.devcontainer \
-        --cache-from=type=local,src=/tmp/.devcontainer-cache \
-        --cache-to=type=local,dest=/tmp/.devcontainer-cache
+      uses: docker/build-push-action@v6
+      with:
+        context: ./.devcontainer
+        file: Dockerfile
+        platforms: linux/amd64
+        push: true
+        tags: "compiler-image:latest"
+        cache-from: type=local,src=/tmp/.devcontainer-cache
+        cache-to: type=local,dest=/tmp/.devcontainer-cache
+      # run: docker buildx build --push --platform linux/amd64 -t compiler-image -f ./.devcontainer/Dockerfile ./.devcontainer \
+      #   --cache-from=type=local,src=/tmp/.devcontainer-cache \
+      #   --cache-to=type=local,dest=/tmp/.devcontainer-cache
 
