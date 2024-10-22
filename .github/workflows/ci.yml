@@ -38,4 +38,4 @@ jobs:
         cache-to: type=local,dest=/tmp/.buildx-cache
 
     - name: Test Docker Image
-      run: docker run ghcr.io/${{ github.repository_owner }}/baby echo "Hello, World!"
+      run: docker run ghcr.io/${{ github.repository_owner }}/baby echo $PWD
