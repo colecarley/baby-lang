@@ -28,4 +28,4 @@ jobs:
         push: true
 
     - name: Test docker image
-      run: docker run ghcr.io/${{ github.repository_owner }}/baby echo "Hello, World!"
+      run: docker run ghcr.io/${{ github.repository_owner }}/baby echo "Hello, World again!"
