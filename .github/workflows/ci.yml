@@ -16,9 +16,15 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Build and push docker image
-      run: docker buildx build --platform linux/amd64,linux/arm64 -t baby --push .
       
+    - name: Build and push docker image 
+      uses: docker/build-push-action@v6
+      with:
+        tags: baby:latest
+        context: ./.devcontainer
+        file: ./.devcontainer/Dockerfile
+        platforms: linux/amd64
+        push: true
+
     - name: Test docker image
       run: docker run baby echo "Hello, World!b
