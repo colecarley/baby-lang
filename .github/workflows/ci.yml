@@ -39,4 +39,4 @@ jobs:
         cache-to: type=local,dest=/tmp/.buildx-cache
 
     - name: Test Docker Image
-      run: docker run ghcr.io/${{ github.repository_owner }}/baby ls
+      run: docker run ghcr.io/${{ github.repository_owner }}/baby:latest cd /build && ls
