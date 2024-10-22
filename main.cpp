@@ -4,20 +4,18 @@
 
 int yyparse();
 
-
-int main() {
-	std::cout << "hello there" << std::endl;
+int main()
+{
+	std::cout << "hello world" << std::endl;
 
 	if (yyparse() == 0)
 	{
 		std::cout << "parsing completed successfully!" << std::endl;
 	}
-	else 
+	else
 	{
 		std::cout << "parsing failed" << std::endl;
 	}
 
-
 	return 0;
 }
-
