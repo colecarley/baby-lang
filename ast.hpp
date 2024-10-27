@@ -12,15 +12,16 @@ public:
     virtual void print() = 0;
 };
 
-class ASTNodeBinaryOp : public ASTNode
+class ASTNodeAdd : public ASTNode
 {
 protected:
     ASTNode *left;
     ASTNode *right;
 
 public:
-    ASTNodeBinaryOp(ASTNode *left, ASTNode *right) : left(left), right(right) {}
-    virtual ~ASTNodeBinaryOp()
+    ASTNodeAdd() = default;
+    ASTNodeAdd(ASTNode *left, ASTNode *right) : left(left), right(right) {}
+    virtual ~ASTNodeAdd()
     {
         delete left;
         delete right;
@@ -32,14 +33,35 @@ public:
     }
 };
 
-class ASTNodeUnaryOp : public ASTNode
+class ASTNodeSub : public ASTNode
+{
+protected:
+    ASTNode *left;
+    ASTNode *right;
+
+public:
+    ASTNodeSub() = default;
+    ASTNodeSub(ASTNode *left, ASTNode *right) : left(left), right(right) {}
+    virtual ~ASTNodeSub()
+    {
+        delete left;
+        delete right;
+    }
+    virtual void print()
+    {
+        left->print();
+        right->print();
+    }
+};
+
+class ASTNodeUnaryMinus : public ASTNode
 {
 protected:
     ASTNode *child;
 
 public:
-    ASTNodeUnaryOp(ASTNode *child) : child(child) {}
-    virtual ~ASTNodeUnaryOp()
+    ASTNodeUnaryMinus(ASTNode *child) : child(child) {}
+    virtual ~ASTNodeUnaryMinus()
     {
         delete child;
     }
@@ -56,6 +78,9 @@ protected:
 
 public:
     ASTNodeIdentifier(std::string name) : name(name) {}
+    virtual ~ASTNodeIdentifier()
+    {
+    }
     virtual void print()
     {
         std::cout << name << std::endl;
@@ -68,6 +93,9 @@ protected:
     int value;
 
 public:
+    virtual ~ASTNodeNumber()
+    {
+    }
     ASTNodeNumber(int value) : value(value) {}
     virtual void print()
     {
@@ -135,10 +163,9 @@ public:
 class ASTNodeBlock : public ASTNode
 {
 
-protected:
+public:
     std::vector<ASTNode *> statements;
 
-public:
     ASTNodeBlock(std::vector<ASTNode *> statements) : statements(statements) {}
     virtual ~ASTNodeBlock()
     {

@@ -1,15 +1,20 @@
 
-%{
+%code requires {
 #include <iostream>
 #include <string>
+#include "ast.hpp"
+#include "program.hpp"
 
-void yyerror(const char* s);
+void yyerror(ASTNode** root, const char* s);
+void baby_parse(ASTNode** root);
+
 extern int yylex();
-%}
+}
 
 %union {
 	int intval;
 	char* id;
+    ASTNode* node;
 }
 
 %token FN;
@@ -27,73 +32,49 @@ extern int yylex();
 %token RPAREN;
 %token DOT;
 
+%type <node> program statement expression term unary primary
+
+%parse-param { ASTNode** root }
+
 %%
 program: 
-       declaration
-       ;
-
-declaration:
-	   statement declaration
-	   |
-	   ;
+    statement { *root = $1; YYACCEPT; }
+    ;
 
 statement:
-	 expression DOT
-	 | block
-	 | assignment
-	 | fn_decl
+	 expression DOT { $$ = $1; }
 	 ;
 
-assignment:
-	  IDENTIFIER EQUAL expression DOT
-	  ;
-
-fn_decl:
-       FN IDENTIFIER LPAREN params RPAREN block
-       ;
-
-params:
-      | IDENTIFIER COMMA params
-      | IDENTIFIER
-      | 
-      ;
-
-block:
-     START declaration END
-     ;
-
 expression:
-	  term
+	  term { $$ = $1; }
 	  ;
 
 term:
-    unary PLUS term
-    | unary MINUS term
-    | unary
+    unary PLUS term { $$ = new ASTNodeAdd($1, $3); }
+    | unary MINUS term { $$ = new ASTNodeSub($1, $3); }
+    | unary { $$ = $1; }
     ;
 
 unary:
-     MINUS unary
-     | call
+     MINUS unary { $$ = new ASTNodeUnaryMinus($2); }
+     | primary { $$ = $1; }
      ;
 
-call:
-    call LPAREN args RPAREN
-    | primary
-    ;
-
-args:
-    expression COMMA args
-    | expression
-    | 
-    ;
-
 primary:
-       INT_LITERAL { std::cout << "found int" << std::endl; } 
-       | IDENTIFIER { std::cout << "found identifier" << std::endl; }
+       INT_LITERAL { $$ = new ASTNodeNumber($1); } 
        ;
 %%
 
-void yyerror(const char* s) {
-	std::cerr << "Error: " << s << std::endl;
+
+void yyerror(ASTNode** root, const char* s) {
+    std::cout << "Error: " << s << std::endl;
+}
+
+
+
+void baby_parse(ASTNode** root) {
+    int ret = yyparse(root);
+    if (ret == 0) {
+        return;
+    }
 }

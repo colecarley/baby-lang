@@ -7,5 +7,5 @@ baby: lexer.l parser.y main.cpp
 	g++ -std=c++11 -o baby main.cpp parser.cpp lexer.cpp
 
 clean:
-	rm -f baby
+	rm -f baby lexer.cpp parser.cpp parser.hpp 
 

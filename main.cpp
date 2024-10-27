@@ -1,21 +1,21 @@
 
 #include <iostream>
 #include <fstream>
-
-int yyparse();
+#include "parser.hpp"
+#include "program.hpp"
 
 int main()
 {
-	std::cout << "hello world" << std::endl;
+	ASTNode *root = nullptr;
+	baby_parse(&root);
 
-	// if (yyparse() == 0)
-	// {
-	// 	std::cout << "parsing completed successfully!" << std::endl;
-	// }
-	// else
-	// {
-	// 	std::cout << "parsing failed" << std::endl;
-	// }
+	if (!root)
+	{
+		return 1;
+	}
 
+	root->print();
+
+	delete root;
 	return 0;
 }
